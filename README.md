@@ -1,9 +1,96 @@
+[formulamaslov.drawio](https://github.com/user-attachments/files/33566052/formulamaslov.drawio)
 # Kursov1
 	Постановка задачи
 
 В задании требуется реализовать программу, позволяющую осуществлять мониторинг технологического процесса по параметру «скорость перемешивания» в химическом реакторе. Программа должна выполнять преобразование измеряемых значений в нормированный показатель качества, проводить оперативный контроль состояния процесса и статистический анализ выборки данных.
 
-Выбор структуры данных для хранения характеристик технологического процесса имеет свои преимущества и обоснования:
+Выбор структуры данных для хранения характеристик технологического процесса имеет свои преимущества и обоснования:<mxfile host="app.diagrams.net">
+  <diagram id="full" name="Блок-схема">
+    <mxGraphModel dx="1241" dy="865" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="b1" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Начало" vertex="1">
+          <mxGeometry height="40" width="240" x="280" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="setlocale(LC_ALL, &quot;Russian&quot;)" vertex="1">
+          <mxGeometry height="50" width="240" x="280" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Вывод: «Введите X:»" vertex="1">
+          <mxGeometry height="50" width="240" x="280" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Ввод X" vertex="1">
+          <mxGeometry height="50" width="240" x="280" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="X &amp;lt; 350?" vertex="1">
+          <mxGeometry height="80" width="180" x="310" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Q = 2 * (x - 350) + 5" vertex="1">
+          <mxGeometry height="50" width="200" x="60" y="385" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="X ≤ 650?" vertex="1">
+          <mxGeometry height="80" width="180" x="310" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Q = 0.5 * pow(x - 500, 2) + 45" vertex="1">
+          <mxGeometry height="50" width="200" x="60" y="515" as="geometry" />
+        </mxCell>
+        <mxCell id="b9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="&lt;font&gt;Q = 2*log(x-650*2)+60&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="210" x="295" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="b10" parent="1" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Вывод X, Q" vertex="1">
+          <mxGeometry height="50" width="240" x="280" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="b11" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontFamily=Times New Roman;fontSize=14;" value="Конец" vertex="1">
+          <mxGeometry height="40" width="240" x="280" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="b1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" target="b2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="b2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" target="b3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="b3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" target="b4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="b4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" target="b5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="b5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;verticalAlign=bottom;fontFamily=Times New Roman;fontSize=12;" target="b6" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Да&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="b5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;align=left;fontFamily=Times New Roman;fontSize=12;" target="b7" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Нет&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="b7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;verticalAlign=bottom;fontFamily=Times New Roman;fontSize=12;" target="b8" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Да&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="b7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;align=left;fontFamily=Times New Roman;fontSize=12;" target="b9" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Нет&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="b9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" target="b10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="b6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="b10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="30" y="410" />
+              <mxPoint x="30" y="745" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="b8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeColor=#000000;exitX=0;exitY=0.5;exitDx=0;exitDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="b10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#000000;" target="b11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
 	1) Использование структуры позволяет объединить все характеристики процесса в одном объекте. Это делает код более организованным и удобочитаемым.
 	2) Параметры скорость перемешивания и единица измерения позволяют задать контролируемую величину и её размерность. Это полезно для корректной интерпретации данных и вывода результатов.
 	3) Параметры штатного режима хранят границы нормального функционирования реактора. Это позволяет легко определять отклонения от технологического регламента.
