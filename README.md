@@ -23,7 +23,7 @@ $$Q(X) =
 2. X = 500 (в диапазоне 350-650): Q = 0.5*(500 - 500)^2 + 45 = 45.00
 3. X = 700 (больше 650): Q = 2*ln(700 - 650 + 2) + 60 = 2*ln(52) + 60 ≈ 2*3.951 + 60 ≈ 67.90
 
-Выбор структуры данных для хранения характеристик технологического процесса имеет свои преимущества и обоснования:<mxfile host="app.diagrams.net">
+<mxfile host="app.diagrams.net">
   <diagram id="full" name="Блок-схема">
     <mxGraphModel dx="1241" dy="865" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
