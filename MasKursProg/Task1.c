@@ -19,6 +19,6 @@ double Q(double x) {
 		return 0.5 * pow(x - 500, 2) + 45;
 	}
 	else {
-		return 2 * log(x - 650 * 2) + 60;
+		return 2 * log(x - 650 + 2) + 60;
 	}
 }
