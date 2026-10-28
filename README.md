@@ -28,7 +28,7 @@ $$Q(X) =
   
 ### Блок-схема X → f(X) → Q → CONTROL → STATE
 
-<img width="919" height="1082" alt="kurs1 drawio" src="https://github.com/user-attachments/assets/5af0bda0-f19f-4072-a5a3-5617ca9c6a2b" />
+<img width="920" height="1082" alt="kurs1 drawio" src="https://github.com/user-attachments/assets/64703f39-6f77-47d0-a1a3-655fee3f13a9" />
 
 ### Блок-схема Q[] → заданный интервал → STATISTICS
 
