@@ -28,7 +28,7 @@ $$Q(X) =
 
 ### Блок-схема Q[] → заданный интервал → STATISTICS
 
-<img width="767" height="597" alt="image" src="https://github.com/user-attachments/assets/a7115648-b5f2-4783-82e7-683823d5d80b" />
+<img width="652" height="635" alt="kurs2 drawio" src="https://github.com/user-attachments/assets/4c9aa43d-937f-4333-8d85-7217801b1011" />
 
 ## Информация о разработчике
 
