@@ -112,7 +112,6 @@ int evaluate_state(double q_val, double* deviation_percent_out) {
         return STATE_ALARM;
     }
 }
-
 void compute_statistics(double q_values[], int count, int* count_below_q0, double* avg_deviation) {
     *count_below_q0 = 0;
     double sum_deviation = 0.0;
