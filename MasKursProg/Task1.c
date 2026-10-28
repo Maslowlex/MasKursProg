@@ -2,86 +2,126 @@
 #include <stdio.h>
 #include <locale.h>
 #include <math.h>
-#include <stdlib.h>
-#include <time.h>
-double Q(double x);
-int check_control(double q_val, double x_val);
-int statistical_analysis();
+
+#define X_MIN 100.0
+#define X_MAX 900.0
+#define Q0 45.0
+#define TOLERANCE_PERCENT 8.0
+#define WARN_PERCENT 20.0
+#define N_MEASUREMENTS 70
+#define N_ANALYZE 30
+
+#define STATE_NORMAL 0
+#define STATE_WARNING 1
+#define STATE_ALARM 2
+
+int read_x(double* x);
+double calculate_q(double x);
+int evaluate_state(double q_val, double* deviation_percent_out);
+void compute_statistics(double q_values[], int count, int* count_below_q0, double* avg_deviation);
+
 int main() {
-    setlocale(LC_ALL, "RUS");
-    double x;
+    setlocale(LC_ALL, "");
+
+    double q_array[N_MEASUREMENTS];
+    double x = 0.0;
+    double q_val = 0.0;
+    double deviation_percent = 0.0;
+    int state_code = 0;
+    int count_below = 0;
+    double avg_dev = 0.0;
+
+    printf("==========================================================\n");
+    printf("|       СИСТЕМА МОНИТОРИНГА СКОРОСТИ ПЕРЕМЕШИВАНИЯ        |\n");
+    printf("==========================================================\n");
+    printf("Программа преобразует X (об/мин) в показатель качества Q,\n");
+    printf("контролирует состояние и выполняет статистический анализ.\n\n");
 
     printf("Проверка контрольного примера \n");
     double test_x = 425.0;
-    printf("X = %.2lf -> Q = %.2lf (Ожидается 2857.50)\n", test_x, Q(test_x));
+    printf("X = %.2lf -> Q = %.2lf (Ожидается 2857.50)\n\n", test_x, calculate_q(test_x));
+    printf("Ввод выборки из %d значений \n", N_MEASUREMENTS);
+    printf("(Допустимый диапазон X: от %.0lf до %.0lf)\n", X_MIN, X_MAX);
 
-    printf("\nРучной ввод \n");
-    printf("Введите X (от 100 до 900): ");
-    if (scanf("%lf", &x) != 1 || x < 100 || x > 900) {
-        printf("Ошибка: X должен быть числом в диапазоне от 100 до 900!\n");
-        return 1;
+    for (int i = 0; i < N_MEASUREMENTS; i++) {
+        printf("Замер %d: ", i + 1);
+
+        if (!read_x(&x)) {
+            printf("  Ошибка: введено не число или X вне диапазона [%.0lf; %.0lf].\n", X_MIN, X_MAX);
+            printf("Программа завершена на замере %d.\n", i + 1);
+            return 1;
+        }
+        q_val = calculate_q(x);
+        q_array[i] = q_val;
+        printf("  -> Q = %.4lf\n", q_val);
+        state_code = evaluate_state(q_val, &deviation_percent);
+        printf("  -> Отклонение от Q0: %.2lf%%\n", deviation_percent);
+        switch (state_code) {
+            case STATE_NORMAL:  printf("  Состояние: НОРМА\n"); break;
+            case STATE_WARNING: printf("  Состояние: ПРЕДУПРЕЖДЕНИЕ\n"); break;
+            case STATE_ALARM:   printf("  Состояние: ТРЕВОГА\n"); break;
+           
+        }
     }
-    double q_val = Q(x);
-    printf("Q(%.2lf) = %.4lf\n", x, q_val);
-    check_control(q_val, x);
-    statistical_analysis();
+    printf("\n Статистический анализ (первые %d значений) \n", N_ANALYZE);
+    compute_statistics(q_array, N_ANALYZE, &count_below, &avg_dev);
+
+    printf("Количество значений Q < Q0 (45.0): %d\n", count_below);
+    printf("Среднее отклонение от Q0: %.4lf\n", avg_dev);
+
     return 0;
 }
-double Q(double x) {
-    if (x < 350) {
-        return 2 * (x - 350) + 5;
+
+int read_x(double* x) {
+    if (scanf("%lf", x) != 1) {
+        return 0;
     }
-    else if (x >= 350 && x <= 650) {
-        return 0.5 * pow(x - 500, 2) + 45;
+    if (*x < X_MIN || *x > X_MAX) {
+        return 0;
+    }
+    return 1;
+}
+
+double calculate_q(double x) {
+    if (x < 350.0) {
+        return 2 * (x - 350.0) + 5;
+    }
+    else if (x >= 350.0 && x <= 650.0) {
+        return 0.5 * (x - 500.0) * (x - 500.0) + 45.0;
     }
     else {
-        return 2 * log(x - 650 + 2) + 60;
+        return 2 * log(x - 650.0 + 2) + 60;
     }
 }
-int check_control(double q_val, double x_val) {
-    double Q0 = 45.0;
-    double tolerance = Q0 * 0.08; 
+
+int evaluate_state(double q_val, double* deviation_percent_out) {
+    double tolerance = Q0 * (TOLERANCE_PERCENT / 100.0);
     double lower_bound = Q0 - tolerance;
     double upper_bound = Q0 + tolerance;
 
-    printf("Допустимый диапазон Q: [%.2lf; %.2lf]\n", lower_bound, upper_bound);
-
     double diff = fabs(q_val - Q0);
-    double percent_diff = (diff / Q0) * 100.0;
+    *deviation_percent_out = (diff / Q0) * 100.0;
 
     if (q_val >= lower_bound && q_val <= upper_bound) {
-        printf("Состояние: НОРМА (отклонение %.2f%%)\n", percent_diff);
+        return STATE_NORMAL;
     }
-    else if (percent_diff <= 20.0) { 
-        printf("Состояние: ПРЕДУПРЕЖДЕНИЕ (отклонение %.2f%%)\n", percent_diff);
+    else if (*deviation_percent_out <= WARN_PERCENT) {
+        return STATE_WARNING;
     }
     else {
-        printf("Состояние: ТРЕВОГА (отклонение %.2f%%)\n", percent_diff);
+        return STATE_ALARM;
     }
 }
-int statistical_analysis() {
-    printf("\n Статистический анализ \n");
-    int N = 70;
-    double q_values[70];
-    double Q0 = 45.0;
 
-    srand(time(NULL));
-    for (int i = 0; i < N; i++) {
-        double x = 100.0 + (rand() % 801);
-        q_values[i] = Q(x);
-    }
-
-    int count_below_Q0 = 0;
+void compute_statistics(double q_values[], int count, int* count_below_q0, double* avg_deviation) {
+    *count_below_q0 = 0;
     double sum_deviation = 0.0;
-    int count_to_analyze = 30; 
 
-    for (int i = 0; i < count_to_analyze; i++) {
+    for (int i = 0; i < count; i++) {
         if (q_values[i] < Q0) {
-            count_below_Q0++;
+            (*count_below_q0)++;
         }
         sum_deviation += fabs(q_values[i] - Q0);
     }
-    double avg_deviation = sum_deviation / count_to_analyze;
-    printf("Количество значений Q < Q0 %d\n", count_below_Q0);
-    printf("Среднее отклонение от Q0 = %.4lf\n", avg_deviation);
+    *avg_deviation = sum_deviation / count;
 }
