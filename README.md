@@ -29,3 +29,7 @@ $$Q(X) =
 ### Блок-схема Q[] → заданный интервал → STATISTICS
 
 <img width="767" height="597" alt="image" src="https://github.com/user-attachments/assets/a7115648-b5f2-4783-82e7-683823d5d80b" />
+
+## Информация о разработчике
+
+### Маслов Александр Евгеньевич бИЦТ-262
