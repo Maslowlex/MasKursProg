@@ -1,58 +1,77 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "kp.h"
 
-int read_x_from_file(FILE* file, double* x) {
-    if (fscanf(file, "%lf", x) != 1) {
-        return 0;
+int read_double(FILE* file, double* x)
+{
+    char buf[64];
+    if (fscanf(file, "%63s", buf) != 1) {
+        return feof(file) ? READ_EOF : READ_DATA_ERR;
     }
-    if (*x < X_MIN || *x > X_MAX) {
-        return 0;
+
+    for (int i = 0; buf[i]; i++) {
+        if (buf[i] == ',') buf[i] = '.';
     }
-    return 1;
+
+    char* end = NULL;
+    double val = strtod(buf, &end);
+    if (end == buf || *end != '\0') {
+        return READ_DATA_ERR;      
+    }
+    *x = val;
+    return READ_OK;
 }
 
-double calculate_q(double x) {
+int validate_x(double x)
+{
+    return (x >= X_MIN && x <= X_MAX) ? 1 : 0;
+}
+
+double calculate_q(double x)
+{
     if (x < 350.0) {
-        return 2 * (x - 350.0) + 5;
+        return 2.0 * (x - 350.0) + 5.0;
     }
-    else if (x >= 350.0 && x <= 650.0) {
+    else if (x <= 650.0) {
         return 0.5 * (x - 500.0) * (x - 500.0) + 45.0;
     }
     else {
-        return 2 * log(x - 650.0 + 2) + 60;
+        return 2.0 * log(x - 650.0 + 2.0) + 60.0;
     }
 }
 
-int evaluate_state(double q_val, double* deviation_percent_out) {
+int get_state_code(double q_val, double* deviation_percent_out)
+{
     double tolerance = Q0 * (TOLERANCE_PERCENT / 100.0);
     double lower_bound = Q0 - tolerance;
     double upper_bound = Q0 + tolerance;
 
     double diff = fabs(q_val - Q0);
-    *deviation_percent_out = (diff / Q0) * 100.0;
+    if (deviation_percent_out) {
+        *deviation_percent_out = (diff / Q0) * 100.0;
+    }
 
     if (q_val >= lower_bound && q_val <= upper_bound) {
         return STATE_NORMAL;
     }
-    else if (*deviation_percent_out <= WARN_PERCENT) {
+    if (diff / Q0 * 100.0 <= WARN_PERCENT) {
         return STATE_WARNING;
     }
-    else {
-        return STATE_ALARM;
-    }
+    return STATE_ALARM;
 }
 
-void compute_statistics(double q_values[], int count, int* count_below_q0, double* avg_deviation) {
-    *count_below_q0 = 0;
-    double sum_deviation = 0.0;
+Statistics compute_statistics(const double q_values[], int count)
+{
+    Statistics s = { 0, 0.0 };
+    if (count <= 0) return s;
 
+    double sum = 0.0;
     for (int i = 0; i < count; i++) {
-        if (q_values[i] < Q0) {
-            (*count_below_q0)++;
-        }
-        sum_deviation += fabs(q_values[i] - Q0);
+        if (q_values[i] < Q0) s.count_below++;
+        sum += fabs(q_values[i] - Q0);
     }
-    *avg_deviation = sum_deviation / count;
+    s.avg_dev = sum / count;
+    return s;
 }
