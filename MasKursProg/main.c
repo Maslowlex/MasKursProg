@@ -36,15 +36,16 @@ int main(void)
     printf("----------------------------------------------------------\n");
 
     while (i < N_MEASUREMENTS) {
-        int rc = read_double(file, &x);
 
-        if (rc == READ_EOF) {
+        ReadStatus status = read_double(file, &x);
+
+        if (status == READ_EOF) {
             printf("\n[Конец файла. Прочитано %d значений из %d]\n",
                 i, N_MEASUREMENTS);
             break;
         }
-        if (rc == READ_DATA_ERR) {
-            printf("\n[ОШИБКА: строка %d не является числом]\n", i + 1);
+        if (status == READ_BAD_VALUE) {
+            printf("\n[ОШИБКА: строка %d содержит некорректные данные (не число)]\n", i + 1);
             break;
         }
 
@@ -68,6 +69,7 @@ int main(void)
         case STATE_WARNING: printf("ПРЕДУПРЕЖДЕНИЕ\n");  break;
         case STATE_ALARM:   printf("ТРЕВОГА\n");         break;
         }
+
         i++;
     }
 
@@ -75,10 +77,13 @@ int main(void)
     printf("----------------------------------------------------------\n");
 
     int analyze_count = (i < N_ANALYZE) ? i : N_ANALYZE;
+
     if (analyze_count > 0) {
         printf("Статистический анализ (на основе первых %d значений):\n",
             analyze_count);
+
         Statistics s = compute_statistics(q_array, analyze_count);
+
         printf("  Количество значений Q < Q0 (%.1f): %d\n", Q0, s.count_below);
         printf("  Среднее отклонение от Q0: %.4lf\n", s.avg_dev);
     }

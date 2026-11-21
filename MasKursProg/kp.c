@@ -4,23 +4,15 @@
 #include <math.h>
 #include "kp.h"
 
-int read_double(FILE* file, double* x)
+ReadStatus read_double(FILE* file, double* x)
 {
-    char buf[64];
-    if (fscanf(file, "%63s", buf) != 1) {
-        return feof(file) ? READ_EOF : READ_DATA_ERR;
+    // fscanf с %lf сам пропускает пробелы, \n и \r перед числом.
+    if (fscanf(file, "%lf", x) != 1) {
+        if (feof(file)) {
+            return READ_EOF;
+        }
+        return READ_BAD_VALUE;
     }
-
-    for (int i = 0; buf[i]; i++) {
-        if (buf[i] == ',') buf[i] = '.';
-    }
-
-    char* end = NULL;
-    double val = strtod(buf, &end);
-    if (end == buf || *end != '\0') {
-        return READ_DATA_ERR;      
-    }
-    *x = val;
     return READ_OK;
 }
 

@@ -19,21 +19,25 @@
 #define STATE_WARNING 1
 #define STATE_ALARM 2
 
-/* --- Коды результата чтения --- */
-#define READ_OK        1   /* число успешно прочитано */
-#define READ_DATA_ERR  0   
-#define READ_EOF      -1   
+/* --- Перечисление для результата чтения (вместо #define) --- */
+typedef enum {
+    READ_OK,        /* 0: число успешно прочитано */
+    READ_EOF,       /* 1: достигнут конец файла */
+    READ_BAD_VALUE  /* 2: прочитан мусор или не число */
+} ReadStatus;
 
+/* --- Структура результата статистики --- */
 typedef struct {
     int    count_below;
     double avg_dev;
 } Statistics;
 
+/* --- Прототипы --- */
 
-int  read_double(FILE* file, double* x);
+/* Возвращает ReadStatus */
+ReadStatus read_double(FILE* file, double* x);
 
 int  validate_x(double x);
-
 double calculate_q(double x);
 int    get_state_code(double q_val, double* deviation_percent_out);
 Statistics compute_statistics(const double q_values[], int count);
