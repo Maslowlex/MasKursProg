@@ -10,7 +10,6 @@
 #define WARN_PERCENT 20.0
 #define N_MEASUREMENTS 70
 #define N_ANALYZE 30
-
 #define DATA_FILENAME "data.txt"
 
 #define STATE_NORMAL 0
@@ -18,9 +17,9 @@
 #define STATE_ALARM 2
 
 typedef enum {
-    READ_OK,       
-    READ_EOF,      
-    READ_BAD_VALUE  
+    READ_OK,
+    READ_EOF,
+    READ_BAD_VALUE
 } ReadStatus;
 
 typedef struct {
@@ -28,12 +27,11 @@ typedef struct {
     double avg_dev;
 } Statistics;
 
-
 ReadStatus read_double(FILE* file, double* x);
-
+ReadStatus read_manual(double* x); 
 int  validate_x(double x);
 double calculate_q(double x);
 int    get_state_code(double q_val, double* deviation_percent_out);
 Statistics compute_statistics(const double q_values[], int count);
-
-#endif /* KP_H */
+void print_state(int state_code);
+#endif

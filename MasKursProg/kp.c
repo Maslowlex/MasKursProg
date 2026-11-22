@@ -7,11 +7,22 @@
 ReadStatus read_double(FILE* file, double* x)
 {
     if (fscanf(file, "%lf", x) != 1) {
-        if (feof(file)) {
-            return READ_EOF;
-        }
+        if (feof(file)) return READ_EOF;
         return READ_BAD_VALUE;
     }
+    return READ_OK;
+}
+
+ReadStatus read_manual(double* x)
+{
+    if (scanf("%lf", x) != 1) {
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+        return READ_BAD_VALUE;
+    }
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+
     return READ_OK;
 }
 
@@ -65,4 +76,11 @@ Statistics compute_statistics(const double q_values[], int count)
     }
     s.avg_dev = sum / count;
     return s;
+}
+void print_state(int state_code) {
+    switch (state_code) {
+    case STATE_NORMAL:  printf("Норма\n");           break;
+    case STATE_WARNING: printf("ПРЕДУПРЕЖДЕНИЕ\n");  break;
+    case STATE_ALARM:   printf("ТРЕВОГА\n");         break;
+    }
 }
