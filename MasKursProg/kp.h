@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 
-/* --- Константы системы --- */
 #define X_MIN 100.0
 #define X_MAX 900.0
 #define Q0 45.0
@@ -14,27 +13,22 @@
 
 #define DATA_FILENAME "data.txt"
 
-/* --- Коды состояний --- */
 #define STATE_NORMAL 0
 #define STATE_WARNING 1
 #define STATE_ALARM 2
 
-/* --- Перечисление для результата чтения (вместо #define) --- */
 typedef enum {
-    READ_OK,        /* 0: число успешно прочитано */
-    READ_EOF,       /* 1: достигнут конец файла */
-    READ_BAD_VALUE  /* 2: прочитан мусор или не число */
+    READ_OK,       
+    READ_EOF,      
+    READ_BAD_VALUE  
 } ReadStatus;
 
-/* --- Структура результата статистики --- */
 typedef struct {
     int    count_below;
     double avg_dev;
 } Statistics;
 
-/* --- Прототипы --- */
 
-/* Возвращает ReadStatus */
 ReadStatus read_double(FILE* file, double* x);
 
 int  validate_x(double x);

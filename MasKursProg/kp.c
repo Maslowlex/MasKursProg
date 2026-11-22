@@ -6,7 +6,6 @@
 
 ReadStatus read_double(FILE* file, double* x)
 {
-    // fscanf с %lf сам пропускает пробелы, \n и \r перед числом.
     if (fscanf(file, "%lf", x) != 1) {
         if (feof(file)) {
             return READ_EOF;
